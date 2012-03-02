@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +50,6 @@ import au.edu.anu.viewer.util.DatastreamType;
 @Path("rifcs")
 public class RifCsService {
 	final Logger log = LoggerFactory.getLogger(RifCsService.class);
-	//TODO This should be from properties file
-	private static final String ctx = "http://localhost:9380/XMLView/resources/";
 	
 	@Context UriInfo uriInfo;
 	
@@ -65,12 +62,11 @@ public class RifCsService {
 		FedoraHelper fo = new FedoraHelper();
 		
 		InputStream xmlFormStream = fo.getDatastreamAsStream(objId, DatastreamType.XML_SOURCE);
-		String xslFormString = ctx + "rifcs.xsl";
+		InputStream xslFormStream = fo.getDatastreamAsStream("def:rif-cs", DatastreamType.XSL_SOURCE);
 		try{
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Source xmlSource = new StreamSource(xmlFormStream);
-			//Source xslSource = new StreamSource(new URL(xslFormString).openStream());
-			Source xslSource = new StreamSource(new URL(xslFormString).openStream());
+			Source xslSource = new StreamSource(xslFormStream);
 			Transformer transformer = tFactory.newTransformer(xslSource);
 			transformer.setParameter("key", objId);
 			transformer.transform(xmlSource, new StreamResult(sw));
@@ -146,11 +142,11 @@ public class RifCsService {
 		FedoraHelper fh = new FedoraHelper();
 		List<String> pids = getPidList(is);
 		
-		
-		String xslFormString = ctx + "rifcs.xsl";
 		InputStream xmlFormStream = null;
-
-		Source xslSource = new StreamSource(new URL(xslFormString).openStream());
+		InputStream xslFormStream = fh.getDatastreamAsStream("def:rif-cs", DatastreamType.XSL_SOURCE);
+		
+		Source xslSource = new StreamSource(xslFormStream);
+		
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		Transformer transformer = tFactory.newTransformer(xslSource);
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
