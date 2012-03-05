@@ -146,13 +146,14 @@ public class SubmitController extends HttpServlet {
 					dcM.setProperty("com.sun.xml.bind.xmlHeaders","<?xml version='1.0' ?>");
 					dcM.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd");
 					dcM.marshal(dc, dcSW);
+					//dcSW.
 					log.info(dcSW.toString());
 				}
 
 				if(item != null && !item.equals("")){
-					fo.saveExistingObject(item, sw.toString(), references, dc.toString());
+					fo.saveExistingObject(item, sw.toString(), references, dcSW.toString());
 				}else if(type != null && !type.equals("")){
-					fo.saveNewObject(type, sw.toString(), references, dc.toString());
+					fo.saveNewObject(type, sw.toString(), references, dcSW.toString());
 				}else {
 				//	log.info("Parameters aren't defined");
 				}
@@ -224,7 +225,7 @@ public class SubmitController extends HttpServlet {
 				String localpart = DCConstants.FIELD_TO_ELEMENTS.get(name);
 				QName qname = new QName(DCConstants.DC, localpart);
 				JAXBElement elem = new JAXBElement(qname,String.class,values[0]);
-				//dc.getItems().add(elem);
+				dc.getItems().add(elem);
 			}
 		}
 	}
@@ -253,7 +254,7 @@ public class SubmitController extends HttpServlet {
 					dataItem.getOption().add(option);
 					if(isDC){
 						JAXBElement elem = new JAXBElement(qname,String.class,values[i]);
-						//dc.getItems().add(elem);
+						dc.getItems().add(elem);
 					}
 				}
 			}

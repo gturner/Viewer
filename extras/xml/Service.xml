@@ -1,6 +1,6 @@
 <webpage>
 	<item name="kind" label="Type" type="TextField" readonly="readonly" value="Service" optionType="single" />
-	<item name="serviceType" label="Service Type" type="ComboBox" optionType="single">
+	<item name="kindType" label="Service Type" type="ComboBox" optionType="single">
 		<option value="create" label="Create" />
 		<option value="generate" label="Generate" />
 		<option value="annotate" label="Annotate" />

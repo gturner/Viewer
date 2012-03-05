@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://ands.org.au/standards/rif-cs/registryObjects">
 	<xsl:param name="key" />
 	
 	<xsl:template match="/">
+		<registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd">
 		<registryObject group="The Australian National University">
 			<key>http://anu.edu.au/<xsl:value-of select="$key" /></key>
 			<originatingSource>http://anu.edu.au</originatingSource>
@@ -33,6 +35,7 @@
 				</xsl:when>
 			</xsl:choose>
 		</registryObject>
+		</registryObjects>
 	</xsl:template>
 	
 	<xsl:template name="process">
@@ -225,6 +228,11 @@
 				<xsl:value-of select="data/item[@name='fullDesc']" />
 			</description>
 		</xsl:if>
+		<xsl:if test="data/item[@name='significance']">
+			<description type="significanceStatement">
+				<xsl:value-of select="data/item[@name='significance']" />
+			</description>
+		</xsl:if>
 		<xsl:if test="data/item[@name='deliveryMethod']">
 			<description type="deliveryMethod">
 				<xsl:value-of select="data/item[@name='deliveryMethod']" />
@@ -278,9 +286,9 @@
 		</xsl:if>
 		<xsl:if test="data/item[@name='accessRights']">
 			<rights>
-				<rightsStatement>
+				<accessRights>
 					<xsl:value-of select="data/item[@name='accessRights']" />
-				</rightsStatement>
+				</accessRights>
 			</rights>
 		</xsl:if>
 		<xsl:if test="data/item[@name='license']">
@@ -292,9 +300,9 @@
 		</xsl:if>
 		<xsl:if test="data/item[@name='rights']">
 			<rights>
-				<rights>
+				<rightsStatement>
 					<xsl:value-of select="data/item[@name='rights']" />
-				</rights>
+				</rightsStatement>
 			</rights>
 		</xsl:if>
 		<xsl:if test="data/item[@name='accessURL']">
