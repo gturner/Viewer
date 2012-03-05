@@ -2,10 +2,11 @@ package au.edu.anu.viewer.fedora;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import au.edu.anu.viewer.util.ViewerProperties;
 
 import com.yourmediashelf.fedora.client.FedoraCredentials;
 
@@ -19,12 +20,10 @@ public class FedoraCredentialsImpl {
 	public FedoraCredentialsImpl(){
 		fedoraCredentials = null;
 		
-		Properties properties = new Properties();
 		try{
-			properties.load(getClass().getResourceAsStream("/viewer.properties"));
-			URL baseUrl = new URL(properties.getProperty("fcbaseuri"));
-			String username = properties.getProperty("fcuser");
-			String password = properties.getProperty("fcpassword");
+			URL baseUrl = new URL(ViewerProperties.getProperty("fcbaseuri"));
+			String username = ViewerProperties.getProperty("fcuser");
+			String password = ViewerProperties.getProperty("fcpassword");
 			fedoraCredentials = new FedoraCredentials(baseUrl, username, password);
 		}catch(IOException e){
 			log.error("Error reading properties file: " + e.toString());
