@@ -221,8 +221,8 @@ public class SubmitController extends HttpServlet {
 			dataItem.setName(name);
 			dataItem.setValue(values[0]);
 			data.getItem().add(dataItem);
-			if(DCConstants.FIELD_TO_ELEMENTS.containsKey(name)){
-				String localpart = DCConstants.FIELD_TO_ELEMENTS.get(name);
+			String localpart = DCConstants.getFieldName(name);
+			if(localpart != null && !localpart.equals("")){
 				QName qname = new QName(DCConstants.DC, localpart);
 				JAXBElement elem = new JAXBElement(qname,String.class,values[0]);
 				dc.getItems().add(elem);
@@ -241,9 +241,9 @@ public class SubmitController extends HttpServlet {
 		boolean isDC = false;
 		QName qname = null;
 		if(values != null){
-			if(DCConstants.FIELD_TO_ELEMENTS.containsKey(name)){
+			String localpart = DCConstants.getFieldName(name);
+			if(localpart != null && !localpart.equals("")){
 				isDC = true;
-				String localpart = DCConstants.FIELD_TO_ELEMENTS.get(name);
 				qname = new QName(DCConstants.DC, localpart);
 			}
 			DataMultipleItem dataItem = new DataMultipleItem();
