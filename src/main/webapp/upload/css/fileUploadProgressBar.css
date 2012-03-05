@@ -1,0 +1,27 @@
+div.progressBar { /*position: relative; /* IE is dumb */
+	display: block;
+	float: left;
+	width: 200px;
+	height: 16px;
+	margin: 0 0 2px;
+	background: #989898;
+	color: #ffffff;
+}
+
+div.progressBar div.progressBarFill { /*position: relative; */
+	background: #3300FF;
+	height: 16px;
+	width: 75%;
+	text-align: right;
+	display: block;
+	float: left;
+}
+
+div.dd div.red { /*position: relative; */
+	background: #f00;
+	height: 16px;
+	width: 75%;
+	text-align: right;
+	display: block;
+	float: left;
+}

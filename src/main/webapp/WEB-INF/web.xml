@@ -8,15 +8,11 @@
 		<param-name>com.sun.jersey.config.property.packages</param-name>
 		<param-value>au.edu.anu.viewer.services</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>-1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Jersey REST Service</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>jsp</servlet-name>
-		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
