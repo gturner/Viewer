@@ -15,7 +15,8 @@ public class DCConstants {
 		
 		aMap.put("name", "title");
 		aMap.put("kind", "type");
-		
+		aMap.put("briefDesc", "description");
+		aMap.put("fullDesc", "description");
 		
 		FIELD_TO_ELEMENTS = Collections.unmodifiableMap(aMap);
 	}

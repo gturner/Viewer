@@ -62,7 +62,7 @@ public class FedoraHelper {
 				AddDatastreamResponse templateResponse = new AddDatastream(pid, "XML_TEMPLATE").controlGroup("M").dsLabel("XML Template").dsLocation(template).mimeType("text/xml").execute(fc);
 				
 				addRelationships(pid, references);
-				//addDublinCore(pid, dc);
+				addDublinCore(pid, dc);
 			}
 		}catch(FedoraClientException e){
 			log.error(e.toString());
@@ -93,7 +93,7 @@ public class FedoraHelper {
 			
 			addRelationships(pid, references);
 			
-			//addDublinCore(pid, dc);
+			addDublinCore(pid, dc);
 		}catch(FedoraClientException e){
 			log.error(e.toString());
 		}
