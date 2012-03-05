@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import au.edu.anu.viewer.listener.UploadProgressListener;
+import au.edu.anu.viewer.util.ViewerProperties;
 
 /**
  * Allows the upload of files to a server
@@ -38,7 +39,7 @@ public class UploadController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	//TODO Put this location in properties file
-	private static final String tempDir = "C:/WorkSpace/UploadLocation/Test/";
+	private static final String tempDir = ViewerProperties.getProperty("uploadDir");
 
 	final Logger log = LoggerFactory.getLogger(UploadController.class);
 
@@ -64,7 +65,7 @@ public class UploadController extends HttpServlet {
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 			//factory.setRepository("");
 			//TODO Put this location in properties file
-			File file = new File("C:/WorkSpace/UploadLocation");
+			File file = new File(ViewerProperties.getProperty("uploadTempDir"));
 			factory.setRepository(file);
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			UploadProgressListener uploadProgress = new UploadProgressListener();
