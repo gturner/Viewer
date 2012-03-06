@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
+import au.edu.anu.viewer.util.ViewerProperties;
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -47,7 +49,9 @@ public class FedoraHelper {
 		
 		String pid = "";
 		//TODO fix webserver path
-		String template = "http://localhost:8380/fedora/objects/" + templateID + "/datastreams/XML_SOURCE/content";
+		//String template = "http://localhost:8380/fedora/objects/" + templateID + "/datastreams/XML_SOURCE/content";
+		String template = getTemplateURLString(templateID);
+		
 		//String template = "fedora:info/" + templateID;
 		try{
 			//create a new object in fedora
@@ -97,6 +101,21 @@ public class FedoraHelper {
 		}catch(FedoraClientException e){
 			log.error(e.toString());
 		}
+	}
+	
+	public void updateTemplateObject(String pid, String templateID){
+		String template = getTemplateURLString(templateID);
+		try{
+			ModifyDatastreamResponse templateResponse = new ModifyDatastream(pid, "XML_TEMPLATE").dsLabel("XML Template").dsLocation(template).execute(fc);
+		}
+		catch(FedoraClientException e){
+			log.error(e.toString());
+		}
+	}
+	
+	private String getTemplateURLString(String templateID){
+		return ViewerProperties.getProperty("fcbaseuri") + "objects/" + templateID + "/datastreams/XML_SOURCE/content";
+		//return "http://localhost:8380/fedora/objects/" + templateID + "/datastreams/XML_SOURCE/content";
 	}
 	
 	public Document getXMLDatastreamObject(String pid, String dsId){

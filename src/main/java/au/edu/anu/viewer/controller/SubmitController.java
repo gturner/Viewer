@@ -54,13 +54,11 @@ public class SubmitController extends HttpServlet {
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException{
-			//boolean isValid = validateInput(request);
 			boolean isValid = validateInputTest(request);
 		if(isValid){
 			PrintWriter out = response.getWriter();
 			out.println("Testing Submit Controller");
 			out.close();
-		//	submitDocument();
 		}else{
 			response.sendRedirect("resources/error.jsp");
 		}
@@ -89,10 +87,8 @@ public class SubmitController extends HttpServlet {
 		InputStream layoutStream = null;
 		
 		if(type != null && !type.equals("")){
-		//	log.info("Retreiving xml source: " + type);
 			layoutStream = fo.getDatastreamAsStream(type, DatastreamType.XML_SOURCE);
 		}else if(item != null && !item.equals("")){
-		//	log.info("Retreiving xml template: " + item);
 			layoutStream = fo.getDatastreamAsStream(item, DatastreamType.XML_TEMPLATE);
 		}
 		try{
@@ -152,10 +148,11 @@ public class SubmitController extends HttpServlet {
 
 				if(item != null && !item.equals("")){
 					fo.saveExistingObject(item, sw.toString(), references, dcSW.toString());
+					if(type != null && !type.equals("")){
+						fo.updateTemplateObject(item, type);
+					}
 				}else if(type != null && !type.equals("")){
 					fo.saveNewObject(type, sw.toString(), references, dcSW.toString());
-				}else {
-				//	log.info("Parameters aren't defined");
 				}
 			}catch(JAXBException e){
 				log.error("Error with jaxb: " + e.toString());

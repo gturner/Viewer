@@ -58,11 +58,13 @@ public class PageController extends HttpServlet {
 			return;
 		}
 		InputStream xmlFormStream = null;
-		if(item != null && !item.equals("")){
-			xmlFormStream = fo.getDatastreamAsStream(item, DatastreamType.XML_TEMPLATE);
-		}else if(type != null && !type.equals("")){
+		if(type != null && !type.equals("")){
 			xmlFormStream = fo.getDatastreamAsStream(type, DatastreamType.XML_SOURCE);
-		}else{
+		}
+		else if(item != null && !item.equals("")){
+			xmlFormStream = fo.getDatastreamAsStream(item, DatastreamType.XML_TEMPLATE);
+		}
+		else{
 			log.error("No item or type");
 			out.println("Error retrieving layout");
 			out.close();
