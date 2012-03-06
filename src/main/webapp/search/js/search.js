@@ -246,7 +246,17 @@ function ajaxSearchRequest()
 					for ( var j = 0; j < columnHeadings.length; j++)
 					{
 						searchResultHtml += "<td>\r\n";
-						searchResultHtml += results[i].getElementsByTagNameNS(sparqlNs, columnHeadings[j])[0].textContent;
+						if (columnHeadings[j] == "item")
+						{
+							var uriToUrl = results[i].getElementsByTagNameNS(sparqlNs, columnHeadings[j])[0].attributes.getNamedItem("uri").nodeValue.replace(
+									"info:fedora", "http://localhost:8081/fedora/objects");
+							searchResultHtml += "<a href=\"" + uriToUrl + "\">";
+							searchResultHtml += results[i].getElementsByTagNameNS(sparqlNs, columnHeadings[j])[0].attributes.getNamedItem("uri").nodeValue;
+							searchResultHtml += "</a>";
+						}
+						else
+							searchResultHtml += results[i].getElementsByTagNameNS(sparqlNs, columnHeadings[j])[0].textContent;
+
 						searchResultHtml += "\r\n</td>\r\n";
 					}
 					searchResultHtml += "</tr>\r\n";
@@ -255,16 +265,11 @@ function ajaxSearchRequest()
 				searchResultHtml += "</table>\r\n";
 				document.getElementById("divSearchResults").innerHTML = searchResultHtml;
 				console.log(document.getElementById("divSearchResults").innerHTML);
-
-				// var results = respXml.getElementsByTagNameNS(dcNs, "result")[0];
 			}
 		};
 
 		ajaxReq.open("POST", servletURL, true);
 		ajaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		// ajaxReq.setRequestHeader("Content-length", params.length);
-		// ajaxReq.setRequestHeader("Connection", "close");
-
 		ajaxReq.send(params);
 	}
 }
