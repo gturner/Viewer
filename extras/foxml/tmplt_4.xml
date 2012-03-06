@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject PID="tmplt:4" VERSION="1.1"
+	xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+	<foxml:objectProperties>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="Service Template"/>
+	</foxml:objectProperties>
+	<foxml:datastream CONTROL_GROUP="X" ID="DC" STATE="A" VERSIONABLE="true">
+		<foxml:datastreamVersion CREATED="2012-01-18T02:40:59.520Z" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/"
+			ID="DC1.0" LABEL="Dublin Core Record for this object" MIMETYPE="text/xml">
+			<foxml:xmlContent>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+					xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+					<dc:title>Service Template</dc:title>
+					<dc:identifier>tmplt:4</dc:identifier>
+					<dc:type>Template</dc:type>
+				</oai_dc:dc>
+			</foxml:xmlContent>
+		</foxml:datastreamVersion>
+	</foxml:datastream>
+	<foxml:datastream CONTROL_GROUP="X" ID="XML_SOURCE" STATE="A" VERSIONABLE="true">
+		<foxml:datastreamVersion CREATED="2012-03-05T00:18:22.606Z" ID="XML_SOURCE.0" LABEL="XML Source" MIMETYPE="text/xml">
+			<foxml:xmlContent>
+				<webpage>
+					<item label="Type" name="kind" optionType="single" readonly="readonly" type="TextField" value="Service"/>
+					<item label="Service Type" name="kindType" optionType="single" type="ComboBox">
+						<option label="Create" value="create"/>
+						<option label="Generate" value="generate"/>
+						<option label="Annotate" value="annotate"/>
+						<option label="Report" value="report"/>
+						<option label="Transform" value="transform"/>
+						<option label="Assemble" value="assemble"/>
+					</item>
+					<item label="Upload to Other Sites?:" name="andsUpload" optionType="reference" referenceLiteral="false"
+						referenceValue="http://anu.edu.au/upload/ands" type="ComboBox">
+						<option label="Yes" value="info:fedora/fedora-system:def/model#Active"/>
+						<option label="No" value="info:fedora/fedora-system:def/model#Deleted"/>
+					</item>
+					<item class="required" label="Service Name:" name="name" optionType="single" tooltip="The name of the dataset" type="TextField"/>
+					<item label="Abbreviated Name:" name="abbrName" optionType="single" type="TextField"/>
+					<item label="Alternate Name:" name="altName" optionType="single" type="TextField"/>
+					<item label="Brief Description:" name="briefDesc" optionType="single" type="TextArea"/>
+					<item label="Full Description:" name="fullDesc" optionType="single" type="TextArea"/>
+					<item class="email" label="Email Address of Contact(s):" name="emailAddress" optionType="multiple" type="TextFieldMulti"/>
+					<item label="Phone Numbers of Contact(s)" name="phoneNumber" optionType="multiple" type="TextFieldMulti"/>
+					<item label="Postal Address:" name="postalAddress" optionType="single" type="TextArea"/>
+					<item label="Delivery Method" name="deliveryMethod" optionType="single" type="ComboBox">
+						<option label="Offline" value="offline"/>
+						<option label="Software" value="software"/>
+						<option label="Web Service" value="webservice"/>
+						<option label="Workflow" value="workflow"/>
+					</item>
+					<item label="Access URL" name="websiteURL" optionType="single" tooltip="The url to access the service" type="TextField"/>
+					<item label="Service Website" name="relatedURL" optionType="single" tooltip="The website about the service if it exists" type="TextField"/>
+					<item label="Access Policy Website" name="accessURL" optionType="single" tooltip="The website of the access policy if it exists" type="TextField"/>
+					<item label="Related Objects:" name="relatedObject" optionType="table" type="Table">
+						<column label="Key" name="objKey" type="TextField"/>
+						<column label="Relation" name="objRelation" type="TextField"/>
+					</item>
+				</webpage>
+			</foxml:xmlContent>
+		</foxml:datastreamVersion>
+	</foxml:datastream>
+</foxml:digitalObject>

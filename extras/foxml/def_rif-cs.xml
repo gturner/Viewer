@@ -1,0 +1,2437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject FEDORA_URI="info:fedora/def:rif-cs" PID="def:rif-cs" VERSION="1.1"
+  xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+  <foxml:objectProperties>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+    <foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="RIF CS XSL"/>
+  </foxml:objectProperties>
+  <foxml:datastream CONTROL_GROUP="X" ID="DC" STATE="A" VERSIONABLE="true">
+    <foxml:datastreamVersion FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/"
+      ID="DC1.0" LABEL="Dublin Core Record for this object" MIMETYPE="text/xml">
+      <foxml:xmlContent>
+        <oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+          <dc:identifier>def:rif-cs</dc:identifier>
+        </oai_dc:dc>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+  <foxml:datastream CONTROL_GROUP="X" ID="XSL_SOURCE" STATE="A" VERSIONABLE="true">
+    <foxml:datastreamVersion ID="XSL_SOURCE.0" LABEL="XSL Source" MIMETYPE="text/xml">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObject group="The Australian National University">
+              <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+              </key>
+              <originatingSource>http://anu.edu.au</originatingSource>
+              <xsl:choose>
+                <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                  <collection>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </collection>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                  <activity>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </activity>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                  <party>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </party>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                  <service>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </service>
+                </xsl:when>
+              </xsl:choose>
+            </registryObject>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <physical>
+                  <addressPart type="addressLine">
+                    <xsl:value-of select="data/item[@name='postalAddress']"/>
+                  </addressPart>
+                </physical>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <electronic type="url">
+                    <value>
+                      <xsl:value-of select="text()"/>
+                    </value>
+                  </electronic>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <electronic type="email">
+                    <value>
+                      <xsl:value-of select="text()"/>
+                    </value>
+                  </electronic>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <physical type="streetAddress">
+                    <addressPart type="telephoneNumber">
+                      <xsl:value-of select="text()"/>
+                    </addressPart>
+                  </physical>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <physical type="streetAddress">
+                    <addressPart type="faxNumber">
+                      <xsl:value-of select="text()"/>
+                    </addressPart>
+                  </physical>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <xsl:if test="column[@name='covDtmFrom']">
+                    <date dateFormat="W3CDTF" type="dateFrom">
+                      <xsl:value-of select="column[@name='covDtmFrom']"/>
+                    </date>
+                  </xsl:if>
+                  <xsl:if test="column[@name='covDtmTo']">
+                    <date dateFormat="W3CDTF" type="dateFrom">
+                      <xsl:value-of select="column[@name='covDtmTo']"/>
+                    </date>
+                  </xsl:if>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-02-24T02:54:54.634Z" ID="XSL_SOURCE.1" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="13499">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:output encoding="UTF-8" indent="yes" media-type="text/xml" method="xml" version="1.0"/>
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObject group="The Australian National University">
+              <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+              </key>
+              <originatingSource>http://anu.edu.au</originatingSource>
+              <xsl:choose>
+                <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                  <collection>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </collection>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                  <activity>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </activity>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                  <party>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </party>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                  <service>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </service>
+                </xsl:when>
+              </xsl:choose>
+            </registryObject>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <physical>
+                  <addressPart type="addressLine">
+                    <xsl:value-of select="data/item[@name='postalAddress']"/>
+                  </addressPart>
+                </physical>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <electronic type="url">
+                    <value>
+                      <xsl:value-of select="text()"/>
+                    </value>
+                  </electronic>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <electronic type="email">
+                    <value>
+                      <xsl:value-of select="text()"/>
+                    </value>
+                  </electronic>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <physical type="streetAddress">
+                    <addressPart type="telephoneNumber">
+                      <xsl:value-of select="text()"/>
+                    </addressPart>
+                  </physical>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <physical type="streetAddress">
+                    <addressPart type="faxNumber">
+                      <xsl:value-of select="text()"/>
+                    </addressPart>
+                  </physical>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <xsl:if test="column[@name='covDtmFrom']">
+                    <date dateFormat="W3CDTF" type="dateFrom">
+                      <xsl:value-of select="column[@name='covDtmFrom']"/>
+                    </date>
+                  </xsl:if>
+                  <xsl:if test="column[@name='covDtmTo']">
+                    <date dateFormat="W3CDTF" type="dateFrom">
+                      <xsl:value-of select="column[@name='covDtmTo']"/>
+                    </date>
+                  </xsl:if>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-03-02T01:57:17.183Z" ID="XSL_SOURCE.2" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="13706">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObject group="The Australian National University">
+              <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+              </key>
+              <originatingSource>http://anu.edu.au</originatingSource>
+              <xsl:choose>
+                <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                  <collection>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </collection>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                  <activity>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </activity>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                  <party>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </party>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                  <service>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </service>
+                </xsl:when>
+              </xsl:choose>
+            </registryObject>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <address>
+                  <physical>
+                    <addressPart type="addressLine">
+                      <xsl:value-of select="data/item[@name='postalAddress']"/>
+                    </addressPart>
+                  </physical>
+                </address>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <address>
+                    <electronic type="url">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <address>
+                    <electronic type="email">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="telephoneNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="faxNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <temporal>
+                    <xsl:if test="column[@name='covDtmFrom']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmFrom']"/>
+                      </date>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covDtmTo']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmTo']"/>
+                      </date>
+                    </xsl:if>
+                  </temporal>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-03-04T22:25:07.347Z" ID="XSL_SOURCE.3" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="13968">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObject group="The Australian National University"
+              xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd">
+              <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+              </key>
+              <originatingSource>http://anu.edu.au</originatingSource>
+              <xsl:choose>
+                <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                  <collection>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </collection>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                  <activity>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </activity>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                  <party>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </party>
+                </xsl:when>
+                <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                  <service>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="data/item[@name='kindType']"/>
+                    </xsl:attribute>
+                    <xsl:call-template name="process"/>
+                  </service>
+                </xsl:when>
+              </xsl:choose>
+            </registryObject>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <address>
+                  <physical>
+                    <addressPart type="addressLine">
+                      <xsl:value-of select="data/item[@name='postalAddress']"/>
+                    </addressPart>
+                  </physical>
+                </address>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <address>
+                    <electronic type="url">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <address>
+                    <electronic type="email">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="telephoneNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="faxNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <temporal>
+                    <xsl:if test="column[@name='covDtmFrom']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmFrom']"/>
+                      </date>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covDtmTo']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmTo']"/>
+                      </date>
+                    </xsl:if>
+                  </temporal>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-03-04T22:52:08.457Z" ID="XSL_SOURCE.4" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="14091">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd">
+              <registryObject group="The Australian National University">
+                <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+                </key>
+                <originatingSource>http://anu.edu.au</originatingSource>
+                <xsl:choose>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                    <collection>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </collection>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                    <activity>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </activity>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                    <party>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </party>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                    <service>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </service>
+                  </xsl:when>
+                </xsl:choose>
+              </registryObject>
+            </registryObjects>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <address>
+                  <physical>
+                    <addressPart type="addressLine">
+                      <xsl:value-of select="data/item[@name='postalAddress']"/>
+                    </addressPart>
+                  </physical>
+                </address>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <address>
+                    <electronic type="url">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <address>
+                    <electronic type="email">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="telephoneNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="faxNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <temporal>
+                    <xsl:if test="column[@name='covDtmFrom']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmFrom']"/>
+                      </date>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covDtmTo']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmTo']"/>
+                      </date>
+                    </xsl:if>
+                  </temporal>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-03-04T23:08:21.235Z" ID="XSL_SOURCE.5" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="14151">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns="http://ands.org.au/standards/rif-cs/registryObjects" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd">
+              <registryObject group="The Australian National University">
+                <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+                </key>
+                <originatingSource>http://anu.edu.au</originatingSource>
+                <xsl:choose>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                    <collection>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </collection>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                    <activity>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </activity>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                    <party>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </party>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                    <service>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </service>
+                  </xsl:when>
+                </xsl:choose>
+              </registryObject>
+            </registryObjects>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <address>
+                  <physical>
+                    <addressPart type="addressLine">
+                      <xsl:value-of select="data/item[@name='postalAddress']"/>
+                    </addressPart>
+                  </physical>
+                </address>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <address>
+                    <electronic type="url">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <address>
+                    <electronic type="email">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="telephoneNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="faxNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <temporal>
+                    <xsl:if test="column[@name='covDtmFrom']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmFrom']"/>
+                      </date>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covDtmTo']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmTo']"/>
+                      </date>
+                    </xsl:if>
+                  </temporal>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rights>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+    <foxml:datastreamVersion CREATED="2012-03-05T03:44:56.630Z" ID="XSL_SOURCE.6" LABEL="XSL Source" MIMETYPE="text/xml" SIZE="14398">
+      <foxml:xmlContent>
+        <xsl:stylesheet version="1.0" xmlns="http://ands.org.au/standards/rif-cs/registryObjects" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:param name="key"/>
+          <xsl:template match="/">
+            <registryObjects xmlns="http://ands.org.au/standards/rif-cs/registryObjects"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ands.org.au/standards/rif-cs/registryObjects http://services.ands.org.au/documentation/rifcs/schema/registryObjects.xsd">
+              <registryObject group="The Australian National University">
+                <key>http://anu.edu.au/<xsl:value-of select="$key"/>
+                </key>
+                <originatingSource>http://anu.edu.au</originatingSource>
+                <xsl:choose>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Collection'">
+                    <collection>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </collection>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Activity'">
+                    <activity>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </activity>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Party'">
+                    <party>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </party>
+                  </xsl:when>
+                  <xsl:when test="data/item[@name='kind']/text() = 'Service'">
+                    <service>
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="data/item[@name='kindType']"/>
+                      </xsl:attribute>
+                      <xsl:call-template name="process"/>
+                    </service>
+                  </xsl:when>
+                </xsl:choose>
+              </registryObject>
+            </registryObjects>
+          </xsl:template>
+          <xsl:template name="process">
+            <xsl:if test="data/item[@name='arcIdentifier']">
+              <identifier type="uri">http://purl.org/au-research/grants/arc/<xsl:value-of select="data/item[@name='arcIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='nlaIdentifier']">
+              <identifier type="uri">
+                <xsl:value-of select="data/item[@name='nlaIdentifier']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='uid']">
+              <identifier type="local">
+                <xsl:value-of select="data/item[@name='uid']"/>
+              </identifier>
+            </xsl:if>
+            <xsl:if test="data/item[@name='lastName'] or data/item[@name='firstName']">
+              <name type="primary">
+                <xsl:if test="data/item[@name='title']">
+                  <namePart type="title">
+                    <xsl:value-of select="data/item[@name='title']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='lastName']">
+                  <namePart type="family">
+                    <xsl:value-of select="data/item[@name='lastName']"/>
+                  </namePart>
+                </xsl:if>
+                <xsl:if test="data/item[@name='givenName']">
+                  <namePart type="given">
+                    <xsl:value-of select="data/item[@name='givenName']"/>
+                  </namePart>
+                </xsl:if>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='alternateName']">
+              <name>
+                <xsl:for-each select="data/item[@name='alternateName']/row">
+                  <xsl:if test="column[@name='altTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='altTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='altLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='altGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='altGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbreviatedName']">
+              <name>
+                <xsl:for-each select="data/item[@name='abbreviatedName']/row">
+                  <xsl:if test="column[@name='abbrTitle']">
+                    <namePart type="title">
+                      <xsl:value-of select="column[@name='abbrTitle']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrLastName']">
+                    <namePart type="family">
+                      <xsl:value-of select="column[@name='abbrLastName']"/>
+                    </namePart>
+                  </xsl:if>
+                  <xsl:if test="column[@name='abbrGiven']">
+                    <namePart type="given">
+                      <xsl:value-of select="column[@name='abbrGiven']"/>
+                    </namePart>
+                  </xsl:if>
+                </xsl:for-each>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='name']">
+              <name type="primary">
+                <namePart>
+                  <xsl:value-of select="data/item[@name='name']"/>
+                </namePart>
+              </name>
+            </xsl:if>
+            <xsl:if test="data/item[@name='abbrName']">
+              <xsl:for-each select="data/item[@name='abbrName']">
+                <name type="abbreviated">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='altName']">
+              <xsl:for-each select="data/item[@name='altName']">
+                <name type="alternative">
+                  <namePart>
+                    <xsl:value-of select="text()"/>
+                  </namePart>
+                </name>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='postalAddress']">
+              <location>
+                <address>
+                  <physical>
+                    <addressPart type="addressLine">
+                      <xsl:value-of select="data/item[@name='postalAddress']"/>
+                    </addressPart>
+                  </physical>
+                </address>
+              </location>
+            </xsl:if>
+            <xsl:if test="data/item[@name='websiteURL']">
+              <xsl:for-each select="data/item[@name='websiteURL']">
+                <location>
+                  <address>
+                    <electronic type="url">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='emailAddress']">
+              <xsl:for-each select="data/item[@name='emailAddress']/option">
+                <location>
+                  <address>
+                    <electronic type="email">
+                      <value>
+                        <xsl:value-of select="text()"/>
+                      </value>
+                    </electronic>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='phoneNumber']">
+              <xsl:for-each select="data/item[@name='phoneNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="telephoneNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='faxNumber']">
+              <xsl:for-each select="data/item[@name='faxNumber']/option">
+                <location>
+                  <address>
+                    <physical type="streetAddress">
+                      <addressPart type="faxNumber">
+                        <xsl:value-of select="text()"/>
+                      </addressPart>
+                    </physical>
+                  </address>
+                </location>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedObject']">
+              <xsl:for-each select="data/item[@name='relatedObject']/row">
+                <relatedObject>
+                  <xsl:choose>
+                    <xsl:when test="starts-with(column[@name='objKey'],'http')">
+                      <key>
+                        <xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <key>http://anu.edu.au/<xsl:value-of select="column[@name='objKey']"/>
+                      </key>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  <relation>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='objRelation']"/>
+                    </xsl:attribute>
+                  </relation>
+                </relatedObject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='forsubject']">
+              <xsl:for-each select="data/item[@name='forsubject']/option">
+                <subject type="anzsrc-for">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='locsubject']">
+              <xsl:for-each select="data/item[@name='locsubject']/option">
+                <subject type="local">
+                  <xsl:value-of select="text()"/>
+                </subject>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='briefDesc']">
+              <description type="brief">
+                <xsl:value-of select="data/item[@name='briefDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='fullDesc']">
+              <description type="full">
+                <xsl:value-of select="data/item[@name='fullDesc']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='significance']">
+              <description type="significanceStatement">
+                <xsl:value-of select="data/item[@name='significance']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='deliveryMethod']">
+              <description type="deliveryMethod">
+                <xsl:value-of select="data/item[@name='deliveryMethod']"/>
+              </description>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageDates']">
+              <xsl:for-each select="data/item[@name='coverageDates']/row">
+                <coverage>
+                  <temporal>
+                    <xsl:if test="column[@name='covDtmFrom']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmFrom']"/>
+                      </date>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covDtmTo']">
+                      <date dateFormat="W3CDTF" type="dateFrom">
+                        <xsl:value-of select="column[@name='covDtmTo']"/>
+                      </date>
+                    </xsl:if>
+                  </temporal>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='coverageArea']">
+              <xsl:for-each select="data/item[@name='coverageArea']/row">
+                <coverage>
+                  <spatial>
+                    <xsl:if test="column[@name='covAreaType']">
+                      <xsl:attribute name="type">
+                        <xsl:value-of select="column[@name='covAreaType']"/>
+                      </xsl:attribute>
+                    </xsl:if>
+                    <xsl:if test="column[@name='covAreaValue']">
+                      <xsl:value-of select="column[@name='covAreaValue']"/>
+                    </xsl:if>
+                  </spatial>
+                </coverage>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='publication']">
+              <xsl:for-each select="data/item[@name='publication']/row">
+                <relatedInfo type="publication">
+                  <identifier>
+                    <xsl:attribute name="type">
+                      <xsl:value-of select="column[@name='pubtype']"/>
+                    </xsl:attribute>
+                    <xsl:value-of select="column[@name='pubvalue']"/>
+                  </identifier>
+                  <title>
+                    <xsl:value-of select="column[@name='pubtitle']"/>
+                  </title>
+                </relatedInfo>
+              </xsl:for-each>
+            </xsl:if>
+            <xsl:if test="data/item[@name='relatedURL']">
+              <relatedInfo type="website">
+                <identifier type="uri">
+                  <xsl:value-of select="data/item[@name='relatedURL']"/>
+                </identifier>
+              </relatedInfo>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessRights']">
+              <rights>
+                <accessRights>
+                  <xsl:value-of select="data/item[@name='accessRights']"/>
+                </accessRights>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='license']">
+              <rights>
+                <license>
+                  <xsl:value-of select="data/item[@name='license']"/>
+                </license>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='rights']">
+              <rights>
+                <rightsStatement>
+                  <xsl:value-of select="data/item[@name='rights']"/>
+                </rightsStatement>
+              </rights>
+            </xsl:if>
+            <xsl:if test="data/item[@name='accessURL']">
+              <accessPolicy>
+                <xsl:value-of select="data/item[@name='accessURL']"/>
+              </accessPolicy>
+            </xsl:if>
+          </xsl:template>
+        </xsl:stylesheet>
+      </foxml:xmlContent>
+    </foxml:datastreamVersion>
+  </foxml:datastream>
+</foxml:digitalObject>

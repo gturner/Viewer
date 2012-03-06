@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject PID="tmplt:1" VERSION="1.1"
+	xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+	<foxml:objectProperties>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="Collection Template"/>
+	</foxml:objectProperties>
+	<foxml:datastream CONTROL_GROUP="X" ID="DC" STATE="A" VERSIONABLE="true">
+		<foxml:datastreamVersion FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/"
+			ID="DC1.0" LABEL="Dublin Core Record for this object" MIMETYPE="text/xml" SIZE="379">
+			<foxml:xmlContent>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+					xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+					<dc:title>Collection Template</dc:title>
+					<dc:identifier>tmplt:1</dc:identifier>
+					<dc:type>Template</dc:type>
+				</oai_dc:dc>
+			</foxml:xmlContent>
+		</foxml:datastreamVersion>
+	</foxml:datastream>
+	<foxml:datastream CONTROL_GROUP="X" ID="XML_SOURCE" STATE="A" VERSIONABLE="true">
+		<foxml:datastreamVersion ID="XML_SOURCE.0" LABEL="XML Document"
+			MIMETYPE="text/xml">
+			<foxml:xmlContent>
+				<webpage>
+					<item label="Type" name="kind" optionType="single" readonly="readonly" type="TextField" value="Collection"/>
+					<item label="Collection Type" name="kindType" optionType="single" type="ComboBox">
+						<option label="Catalogue" value="catalogueOrIndex"/>
+						<option label="Collection" value="collection"/>
+						<option label="Registry" value="registry"/>
+						<option label="Repository" value="repository"/>
+						<option label="Dataset" value="dataset"/>
+					</item>
+					<item label="Upload to Other Sites?:" name="andsUpload" optionType="reference" referenceLiteral="false"
+						referenceValue="http://anu.edu.au/upload/ands" type="ComboBox">
+						<option label="Yes" value="info:fedora/fedora-system:def/model#Active"/>
+						<option label="No" value="info:fedora/fedora-system:def/model#Deleted"/>
+					</item>
+					<item class="required" label="Dataset Name:" name="name" optionType="single" tooltip="The name of the dataset" type="TextField"/>
+					<item label="Abbreviated Dataset Name:" name="abbrName" optionType="single" type="TextField"/>
+					<item label="Alternate Name:" name="altName" optionType="single" type="TextField"/>
+					<item label="Brief Description:" name="briefDesc" optionType="single" type="TextArea"/>
+					<item label="Full Description:" name="fullDesc" optionType="single" type="TextArea"/>
+					<item label="Significance Statement:" name="significance" optionType="single" type="TextArea"/>
+					<item class="email" label="Email Address of Contact:" name="emailAddress" optionType="multiple" type="TextFieldMulti"/>
+					<item label="Postal Address:" name="postalAddress" optionType="single" type="TextArea"/>
+					<item label="Dataset Website" name="websiteURL" optionType="single"
+						tooltip="The website of the dataset if it exists" type="TextField"/>
+					<item label="ANZSRC-FOR Subject" name="forsubject" optionType="multiple" type="TextFieldMulti"/>
+					<item label="Other Subject" name="locsubject" optionType="multiple" type="TextFieldMulti"/>
+					<item label="Dates of Collection (yyyy-MM-dd hh:mm:ss.SSS)" name="coverageDates" optionType="table"
+						tooltip="The timeframe the collection os based upon (e.g. if it is about the 17th century put in 1600)" type="Table">
+						<column class="date" label="From" name="covDtmFrom" type="TextField"/>
+						<column class="date" label="To" name="covDtmTo" type="TextField"/>
+					</item>
+					<item label="Area of Collection" name="coverageArea" optionType="table" type="Table">
+						<column label="Type" name="covAreaType" type="TextField"/>
+						<column label="Value" name="covAreaValue" type="TextField"/>
+					</item>
+					<item label="Publications:" name="publication" optionType="table" type="Table">
+						<column label="Type" name="pubtype" type="TextField"/>
+						<column label="Value" name="pubvalue" type="TextField"/>
+						<column label="Title" name="pubtitle" type="TextField"/>
+					</item>
+					<item label="Related Objects:" name="relatedObject" optionType="table" type="Table">
+						<column label="Key" name="objKey" type="TextField"/>
+						<column label="Relation" name="objRelation" type="TextField"/>
+					</item>
+					<item label="Access Rights:" name="accessRights" optionType="single" type="TextArea"/>
+					<item label="Licence:" name="licence" optionType="single" type="TextArea"/>
+					<item label="Rights:" name="rights" optionType="single" type="TextArea"/>
+				</webpage>
+			</foxml:xmlContent>
+		</foxml:datastreamVersion>
+	</foxml:datastream>
+</foxml:digitalObject>

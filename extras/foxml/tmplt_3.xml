@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxml:digitalObject PID="tmplt:3" VERSION="1.1"
+	xmlns:foxml="info:fedora/fedora-system:def/foxml#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:fedora/fedora-system:def/foxml# http://www.fedora.info/definitions/1/0/foxml1-1.xsd">
+	<foxml:objectProperties>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#state" VALUE="Active"/>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#label" VALUE="Activity Template"/>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#ownerId" VALUE=""/>
+		<foxml:property NAME="info:fedora/fedora-system:def/model#createdDate" VALUE="2012-01-18T02:29:54.966Z"/>
+		<foxml:property NAME="info:fedora/fedora-system:def/view#lastModifiedDate" VALUE="2012-02-28T03:14:54.625Z"/>
+	</foxml:objectProperties>
+
+	<foxml:datastream CONTROL_GROUP="X" FEDORA_URI="info:fedora/tmplt:3/DC" ID="DC" STATE="A" VERSIONABLE="true">
+		<foxml:datastreamVersion CREATED="2012-01-18T02:29:54.966Z" FORMAT_URI="http://www.openarchives.org/OAI/2.0/oai_dc/"
+			ID="DC1.0" LABEL="Dublin Core Record for this object" MIMETYPE="text/xml">
+			<foxml:xmlContent>
+				<oai_dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+					xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd">
+					<dc:title>Activity Template</dc:title>
+					<dc:identifier>tmplt:3</dc:identifier>
+					<dc:type>Template</dc:type>
+				</oai_dc:dc>
+			</foxml:xmlContent>
+		</foxml:datastreamVersion>
+	</foxml:datastream>
+<foxml:datastream CONTROL_GROUP="X" ID="XML_SOURCE" STATE="A" VERSIONABLE="true">
+	<foxml:datastreamVersion ID="XML_SOURCE.0" LABEL="XML Source" MIMETYPE="text/xml">
+		<foxml:xmlContent>
+			<webpage>
+				<item label="Type:" name="kind" optionType="single" readonly="readonly" type="TextField" value="Activity"/>
+				<item label="Activity Type:" name="kindType" optionType="single" type="ComboBox">
+					<option label="Project" value="project"/>
+					<option label="Program" value="program"/>
+					<option label="Course" value="course"/>
+					<option label="Award" value="award"/>
+					<option label="Event" value="event"/>
+				</item>
+				<item label="Upload to Other Sites?:" name="andsUpload" optionType="reference" referenceLiteral="false"
+					referenceValue="http://anu.edu.au/upload/ands" type="ComboBox">
+					<option label="Yes" value="info:fedora/fedora-system:def/model#Active"/>
+					<option label="No" value="info:fedora/fedora-system:def/model#Deleted"/>
+				</item>
+				<item class="required" label="Activity Name:" name="name" optionType="single" tooltip="The name of the dataset" type="TextField"/>
+				<item label="Abbreviated Name:" name="abbrName" optionType="single" type="TextField"/>
+				<item label="Alternate Name:" name="altName" optionType="single" type="TextField"/>
+				<item label="ARC Grant Number:" name="arcIdentifier" optionType="single" type="TextField"/>
+				<item label="Brief Description:" name="briefDesc" optionType="single" type="TextArea"/>
+				<item label="Full Description:" name="fullDesc" optionType="single" type="TextArea"/>
+				<item class="email" label="Email Address of Contact(s):" name="emailAddress" optionType="multiple" type="TextFieldMulti"/>
+				<item label="Phone Numbers of Contact(s)" name="phoneNumber" optionType="multiple" type="TextFieldMulti"/>
+				<item label="Postal Address:" name="postalAddress" optionType="single" type="TextArea"/>
+				<item label="Activity Website" name="websiteURL" optionType="single" tooltip="The website of the dataset if it exists" type="TextField"/>
+				<item label="ANZSRC-FOR Subject" name="forsubject" optionType="multiple" type="TextFieldMulti"/>
+				<item label="Other Subject" name="locsubject" optionType="multiple" type="TextFieldMulti"/>
+				<item label="Publications:" name="publication" optionType="table" type="Table">
+					<column label="Type" name="pubtype" type="TextField"/>
+					<column label="Value" name="pubvalue" type="TextField"/>
+					<column label="Title" name="pubtitle" type="TextField"/>
+				</item>
+				<item label="Related Objects:" name="relatedObject" optionType="table" type="Table">
+					<column label="Key" name="objKey" type="TextField"/>
+					<column label="Relation" name="objRelation" type="TextField"/>
+				</item>
+			</webpage>
+		</foxml:xmlContent>
+	</foxml:datastreamVersion>
+</foxml:datastream>
+</foxml:digitalObject>
