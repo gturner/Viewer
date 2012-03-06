@@ -276,6 +276,7 @@ function ajaxSearchRequest()
 
 function basicSearch()
 {
+	document.getElementById("divSearchResults").innerHTML = "";
 	if (generateBasicQuery() == true)
 		ajaxSearchRequest();
 }

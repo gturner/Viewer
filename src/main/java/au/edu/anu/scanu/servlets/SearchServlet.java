@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 
+import au.edu.anu.scanu.fedora.LocalFedoraRepository;
+
 /**
  * Servlet implementation class ProxyServlet
  */
@@ -32,8 +34,6 @@ public final class SearchServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	private final Logger log = Logger.getLogger(this.getClass().getName());
-	private static final String FEDORA_URL = "http://localhost:8081/fedora/risearch";
-	private static final String FEDORA_CREDENTIALS = "fedoraAdmin:admin";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -67,17 +67,17 @@ public final class SearchServlet extends HttpServlet
 		
 	
 		// Open connection and send POST request.
-		HttpURLConnection connection = (HttpURLConnection) new URL(FEDORA_URL).openConnection();
+		HttpURLConnection connection = (HttpURLConnection) new URL(LocalFedoraRepository.getFedoraUrl() + "/risearch").openConnection();
 		connection.setDoOutput(true);
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Length", "" + sb.length());
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		connection.setRequestProperty("Accept-Charset", Charset.defaultCharset().name());
-		if (!FEDORA_CREDENTIALS.equals(""))
-		{
-			connection.setRequestProperty("Authorization", "Basic " + Base64.encodeBase64String(FEDORA_CREDENTIALS.getBytes()));
-			log.info(Base64.encodeBase64String("fedoraAdmin:fedoraAdmin".getBytes()));
-		}
+		StringBuilder credentials = new StringBuilder();
+		credentials.append(LocalFedoraRepository.getFedoraUsername());
+		credentials.append(":");
+		credentials.append(LocalFedoraRepository.getFedoraPassword());
+		connection.setRequestProperty("Authorization", "Basic " + Base64.encodeBase64String(credentials.toString().getBytes()));
 
 		// Write the query.
 		searchUrlOutputStream = connection.getOutputStream();

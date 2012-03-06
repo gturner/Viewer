@@ -135,7 +135,22 @@ public class LocalFedoraRepository
 			transformer.transform(new StreamSource(getDsDissmnResp.getEntityInputStream()), new DOMResult(extractedDcDoc));
 
 		}
-		catch (NullPointerException | FedoraClientException | TransformerException | ParserConfigurationException e)
+		catch (NullPointerException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (TransformerException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (ParserConfigurationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (FedoraClientException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -167,4 +182,20 @@ public class LocalFedoraRepository
 			e.printStackTrace();
 		}
 	}
+	
+	public static String getFedoraUrl()
+	{
+		return fedoraServerProps.getProperty("Server");
+	}
+	
+	public static String getFedoraUsername()
+	{
+		return fedoraServerProps.getProperty("Username");
+	}
+	
+	public static String getFedoraPassword()
+	{
+		return fedoraServerProps.getProperty("Password");
+	}
+			
 }

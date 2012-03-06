@@ -4,6 +4,12 @@
 
 var ajaxRequest;
 
+/**
+ * Takes a number as a parameter and returns the number with commas. E.g. 123456789 returns 123,456,789.
+ * 
+ * @param nStr
+ * @returns
+ */
 function addCommas(nStr)
 {
 	nStr += '';
@@ -21,7 +27,7 @@ function addCommas(nStr)
 function ajaxFunction()
 {
 	// var servletUrl = "/FileUpload/FileUploadServlet";
-	var servletUrl = contextPath + "upload.do";
+	var servletUrl = contextPath + "/upload/upload.do?rand=" + (Math.random() * 100000000000000000);
 
 	if (window.XMLHttpRequest)
 	{

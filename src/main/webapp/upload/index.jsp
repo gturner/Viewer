@@ -5,17 +5,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>File Upload</title>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() + "/"%>upload/css/fileUploadProgressBar.css"></link>
-<script type="text/javascript" src="<%=request.getContextPath() + "/"%>upload/js/ajaxProgress.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/upload/css/fileUploadProgressBar.css"></link>
+<script type="text/javascript" src="<%=request.getContextPath()%>/upload/js/ajaxProgress.js"></script>
 <script type="text/javascript">
-	var contextPath = "<%=request.getContextPath() + "/"%>";
+	contextPath = "<%=request.getContextPath()%>";
 	console.log(contextPath);
 </script>
 </head>
 <body>
 	<h1>Upload to Holding folder</h1>
 	<iframe id="uploadFrameID" name="uploadFrame" height="0" width="0" style="display: none;"></iframe>
-	<form id="myForm" enctype="multipart/form-data" method="post" target="uploadFrame" action="<%=request.getContextPath() + "/"%>upload.do"
+	<form id="myForm" enctype="multipart/form-data" method="post" target="uploadFrame" action="<%=request.getContextPath()%>/upload/upload.do"
 		onsubmit="ajaxFunction()">
 		<input type="file" name="txtFile" id="txtFile" size="50" />&nbsp;&nbsp;<input type="submit" id="submitID" name="submit" value="Upload" />
 	</form>

@@ -16,7 +16,6 @@
 		<li><a href="<%=request.getContextPath()%>/search/">Search</a></li>
 		<li><a href="<%=request.getContextPath()%>/upload/">File Upload</a></li>
 		<li><a href="<%=request.getContextPath()%>/dc/">Dublin Core</a></li>
-		<li><a href="<%=request.getContextPath()%>/dc/extractdc.jsp">Extract Dublin Core</a></li>
 	</ul>
 	<h4>Debug Information:</h4>
 	<table border="1" cellpadding="3" cellspacing="0">
@@ -26,7 +25,7 @@
 		</tr>
 		<tr>
 			<td>request.getContextPath()</td>
-			<td><%=request.getContextPath() + "/"%></td>
+			<td><%=request.getContextPath()%></td>
 		</tr>
 		<tr>
 			<td>request.getServletPath()</td>

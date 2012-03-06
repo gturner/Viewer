@@ -88,7 +88,17 @@ public final class DublinCoreServlet extends HttpServlet
 			{
 				dc = new DublinCore(request.getParameter("dctext"));
 			}
-			catch (SAXException | ParserConfigurationException | IOException e)
+			catch (SAXException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (ParserConfigurationException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
